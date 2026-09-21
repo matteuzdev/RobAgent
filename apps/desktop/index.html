@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Roby</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+<body>
+  <main class="shell">
+    <header class="topbar">
+      <div class="brand">
+        <div id="orb" class="orb sleeping" aria-hidden="true"></div>
+        <div>
+          <strong>Roby</strong>
+          <span id="status">iniciando presença local…</span>
+        </div>
+      </div>
+      <button id="hide" class="window-button" title="Ocultar">—</button>
+    </header>
+
+    <section class="hero">
+      <div class="state-label">PRESENÇA</div>
+      <h1 id="stateText">Dormindo</h1>
+      <p id="hint">Duas palmas para acordar.</p>
+    </section>
+
+    <section id="conversation" class="conversation" aria-live="polite">
+      <div class="system-message">
+        O microfone fica local enquanto Roby dorme. A conversa online só começa depois do gatilho.
+      </div>
+    </section>
+
+    <footer>
+      <span id="micStatus">microfone: preparando…</span>
+      <span>“Roby, pode dormir” encerra a conversa</span>
+    </footer>
+  </main>
+
+  <audio id="remoteAudio" autoplay></audio>
+  <script type="module" src="./renderer.js"></script>
+</body>
+</html>

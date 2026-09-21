@@ -1,0 +1,17 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+
+# Roby private runtime data. NEVER commit personal memory.
+.roby-data/
+private/
+secrets/
+
+# Local recordings / camera frames
+captures/
+recordings/
+
+.DS_Store
+Thumbs.db
