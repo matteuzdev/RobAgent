@@ -1,0 +1,21 @@
+{
+  "identity": {
+    "name": "Roby",
+    "language": "pt-BR",
+    "voiceStyle": "nordestino-direto"
+  },
+  "privacy": {
+    "personalDataStorage": "private-runtime-only",
+    "cameraDefault": "off",
+    "persistRawFrames": false
+  },
+  "orchestration": {
+    "maxCouncilLenses": 6,
+    "researchBeforeBuild": true,
+    "requireVerificationForActions": true
+  },
+  "lifeOS": {
+    "center": "faith-and-values",
+    "areas": ["faith", "family", "health", "mind", "work", "finance", "lifestyle"]
+  }
+}
