@@ -1,0 +1,13 @@
+{
+  "name": "robagent",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": ["apps/api"],
+  "scripts": {
+    "dev": "npm --workspace @robagent/api run dev",
+    "build": "npm --workspace @robagent/api run build",
+    "start": "npm --workspace @robagent/api run start",
+    "typecheck": "npm --workspace @robagent/api run typecheck"
+  },
+  "engines": { "node": ">=20" }
+}

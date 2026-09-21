@@ -1,32 +1,78 @@
-# Roby OS
+# RobAgent — AI Radar
 
-> Personal AI Operating System — a private, model-agnostic, agentic assistant designed to understand one person deeply, coordinate specialist squads, research before answering, learn continuously, and execute with verification.
+RobAgent is a private-by-design intelligence radar for high-signal WhatsApp groups and other feeds.
 
-This repository is being bootstrapped from scratch.
+It captures notifications from an Android device, sends them to a small ingestion API, classifies each item with AI, enriches GitHub links, stores the result in Supabase, and raises an alert only when the item is important enough.
 
-## Core principles
+## Flow
 
-- **God / values first:** the system optimizes life in alignment with the user's declared values, not raw productivity.
-- **One interface, many specialists:** the user talks to Roby; Roby routes work to internal squads and tools.
-- **Model-agnostic:** LLMs are replaceable providers. Identity, memory, permissions and data belong to Roby OS.
-- **Research before build:** when current information can change the answer, research and verify before acting.
-- **Never fake execution:** a task is only complete when the tool/result is verified.
-- **Private by default:** personal data is local/private and must never be committed to this public repository.
-- **Human authority:** risky actions require explicit permission and auditable logs.
-- **Nordestino voice, serious cognition:** communication style is separate from reasoning quality.
+```
+WhatsApp notification
+        ↓
+Android NotificationListener
+        ↓
+POST /v1/ingest/android
+        ↓
+dedupe → classify → GitHub enrichment
+        ↓
+Supabase
+        ↓
+score >= threshold → alert webhook
+```
 
-## Planned subsystems
+## Implemented
 
-- Roby Core orchestrator
-- Cangaço Council / specialist squads
-- Life OS (faith, family, health, mind, work, finance, lifestyle)
-- Research Engine
-- Learning Engine
-- Memory Engine
-- Tool / MCP registry
-- Verification + evals
-- Vision layer (webcam, explicit permission)
-- Voice layer
-- Web dashboard
+- Android listener for WhatsApp and WhatsApp Business notifications
+- authenticated ingestion endpoint
+- message deduplication
+- AI classification with an OpenAI-compatible endpoint
+- heuristic fallback when no model is configured
+- automatic GitHub repository enrichment
+- Supabase persistence through REST
+- configurable high-priority alert webhook
+- health endpoint
+- privacy and architecture docs
 
-See the implementation branch / pull request for the first working foundation.
+## API quick start
+
+Requirements: Node.js 20+.
+
+```bash
+cp .env.example .env
+npm install
+npm run dev
+```
+
+Health check:
+
+```bash
+curl http://localhost:8787/health
+```
+
+Run `supabase/migrations/001_ai_radar.sql` in Supabase before production use.
+
+## Android collector
+
+Open `apps/android-listener` in Android Studio. Set the API URL and collector secret in `app/build.gradle.kts`, install the app, then tap **Open notification access** and authorize RobAgent.
+
+The collector does not log in to WhatsApp, scrape WhatsApp Web, or use an unofficial WhatsApp client. It receives only notification data Android exposes to the app.
+
+## Environment
+
+See `.env.example`.
+
+- `RADAR_INGEST_SECRET` — secret shared with the Android collector
+- `SUPABASE_URL`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `AI_BASE_URL`, `AI_API_KEY`, `AI_MODEL`
+- `GITHUB_TOKEN` — optional, increases GitHub API limits
+- `ALERT_WEBHOOK_URL` — optional, e.g. n8n
+- `ALERT_SCORE_MIN` — default 8
+
+## Privacy
+
+Never commit WhatsApp exports, notification dumps, screenshots, model keys, service-role keys or tokens. See `docs/PRIVACY.md`.
+
+## Next layer
+
+An authenticated dashboard/search interface over the stored intelligence: filters by category, score, repo, project and date, plus daily/weekly digests.
